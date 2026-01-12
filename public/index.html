@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Dappan.fun – Token Creator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="description" content="Minimal interface for creating Pump-compatible Solana tokens." />
+  <meta name="robots" content="index,follow" />
+
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    div.mandatory {
+      font-size: 0.6rem;
+      color: red;
+    }
+
+    div.image_comment {
+      font-size: 0.6rem;
+      font-weight: 100;
+
+    }
+
+    div.option {
+      font-size: 0.6em;
+    }
+
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+
+.login_container{
+flex-direction: column;
+
+}
+    button.login-btn {
+      margin: 2px;
+      margin-top: 8px;
+      padding: 4px, 4px, 4px, 4px;
+      background: #454947;
+      border: none;
+      color: #fffefe;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .noData {
+    position:relative;
+      top: 0;
+      right: 0;
+      margin: 4px, auto, 4px, auto;
+      font-size: 0.6em;
+      
+    }
+
+    .signin {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+
+    button {
+      margin-top: 24px;
+      padding: 14px;
+      width: 100%;
+      background: #22c55e;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+
+
+
+    .result {
+      margin-top: 32px;
+      padding: 16px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .preview {
+      margin-top: 16px;
+    }
+
+    .preview img {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    div.notice {
+      font-size: 0.5em;
+    }
+
+    div.disclaimer {
+      font-size: 0.4em;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <script src="https://cdn.privy.io/privy.js"></script>
+    <script src="main.js"></script>
+<div class="login_container">
+    <div class="signin">
+      <button id="loginBtn" class="login-btn">Wallet login</button>
+      <div class="noData">No Data Stored.</div>
+    </div>
+    <p id="walletInfo" style="margin-top:8px; color:#aaa; font-size:12px;"></p>
+</div>
+
+    <h1>Dappan.fun</h1>
+    <div class"h1_sub>Token Launch Localization Service</div>
+
+    <label>Coin Name</label>
+    <div class="mandatory">*Required</div>
+    <input id="name" placeholder="Your Shit Coin Name (no edits later)" />
+
+    <label>Ticker</label>
+    <div class="mandatory">*Required</div>
+    <input id="ticker" placeholder="Your Shit Coin's ticker = SITC" />
+
+    <label>Description</label>
+    <div class="option">(Optional)</div>
+    <textarea id="description" placeholder="Example:The shit coin of shit coin, the endgame"></textarea>
+
+    <label>Image URL
+      <div class="mandatory">*Required / must be a direct link</div>
+      <div class="image_comment">*It Will be your token's icon</div>
+
+      <input type="url" id="imageUrl" placeholder="https://example.com/image.png" required>
+    </label>
+    <p>
+    <div class="notice">Image must be a direct URL to a publicly accessible image (PNG/JPG).
+      We do not host or store images.</div>
+    </p>
+    <div class="preview" id="preview"></div>
+
+    <button id="createBtn">Launch your token on Pump.fun</button>
+    <div class="notice">
+      <br>
+      <li>*Required subjects are mandatory</li>
+      <li>You will be NOT able to edit, change, anything after DEPLOY/LAUNCH. Make new one if you had a mistake</li>
+      <li>Dappan.fun provides a UI layer only.</li>
+      <li>We do not host images, metadata, or funds.</li>
+      <li>All mint and authority permissions are </li>
+      <li>revoked at launch and verifiable on-chain.</li>
+      <li>Tokens are immutable after launch. No edits, no recovery.</li>
+    </div>
+    <div id="walletInfo"></div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+  <div id="result"></div>
+  <div id="termsModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:9999;
+">
+    <div style="
+    background:#111;
+    color:#fff;
+    max-width:520px;
+    margin:10vh auto;
+    padding:20px;
+    border-radius:8px;
+  ">
+      <h3>Important Notice</h3>
+      <ul style="font-size:14px; line-height:1.5">
+        <li>Required fields are mandatory</li>
+        <li>No edits after launch</li>
+        <li>UI layer only</li>
+        <li>No custody, no recovery</li>
+        <li>All authorities revoked at launch</li>
+      </ul>
+
+      <label style="display:block;margin-top:12px">
+        <input type="checkbox" id="agreeCheck">
+        I understand and agree
+      </label>
+
+      <button id="agreeBtn" disabled style="margin-top:12px">
+        Continue
+      </button>
+    </div>
+  </div>
+</body>
+
+</html>

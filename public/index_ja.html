@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <link rel="canonical" href="https://dappan.fun/">
+  <meta name="robots" content="noindex,nofollow">
+  <meta charset="UTF-8" />
+  <title>脱藩.fun – Create Token</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    div.mandatory {
+      font-size: 0.6rem;
+      color: red;
+    }
+
+    div.image_comment {
+      font-size: 0.6rem;
+      font-weight: 100;
+
+    }
+
+    div.option {
+      font-size: 0.6em;
+    }
+
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 14px;
+      width: 100%;
+      background: #22c55e;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+
+
+
+    .result {
+      margin-top: 32px;
+      padding: 16px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .preview {
+      margin-top: 16px;
+    }
+
+    .preview img {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    div.notice {
+      font-size: 0.5em;
+    }
+  div.disclaimer{
+font-size: 0.4em;
+color: #333;
+
+
+}
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+<script src="https://cdn.privy.io/privy.js"></script>
+<script src="main.js"></script>
+
+<button id="login">Login</button>
+    <h1>脱藩.fun</h1>
+    <div class"h1_sub>トークンローンチUI翻訳サービス</div>
+
+    <label>コインの名称</label>
+    <div class="mandatory">※必須</div>
+    <input id="name" placeholder="例: Dappan Coin または 脱藩コイン" />
+
+    <label>ティッカー</label>
+    <div class="mandatory">※必須</div>
+    <input id="ticker" placeholder="例: DPAN ($DPANとして表示されます)" />
+
+    <label>説明</label>
+    <div class="option">(オプション)</div>
+        <textarea id="description" placeholder="例: 脱藩した者だけが辿り着く場所"></textarea>
+
+        <label>画像</label>
+        <div class="mandatory">※必須</div>
+        <div class="image_comment">(トークンのアイコン画像になります)
+          </div>
+            <input id="image" type="file" accept="image/*" />
+
+            <div class="preview" id="preview"></div>
+
+            <button id="createBtn">Pump.funでトークンを発行</button>
+            <div class="notice">
+              <br>
+              <li>※必須項目は必ず入力が必要です。</li>
+              <li>あとから内容は変更できません。間違えた場合は再度作り直してください。</li>
+<li>
+脱藩.funはトークンローンチのUIレイヤーだけを提供しております。
+</li>
+<li>
+すべてのミント権限、オーソリティー権限はローンチ語に自動的にリボークされる仕様となっており、オンチェーンで確認できます。</li>
+            </div>
+
+            <div class="result" id="result"></div>
+          </div>
+
+          <script type="module" src="./main.js"></script>
+<p>
+<div class="disclaimer">トークンが Graduate に到達した後は、
+脱藩.funが提供する日本語UIトレードプラットフォーム
+「パンプでGO」 をご利用いただけます。
+<br>
+パンプでGOでは、
+トークンのSwap取引から発生する手数料の一部を
+トークン運営者へ分配する仕組み を提供予定です。
+<br>
+※利用には紹介コードの設定が必要となります。</div>
+
+</p>
+</body>
+
+</html>
