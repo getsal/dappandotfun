@@ -10,111 +10,205 @@
   <meta name="robots" content="index,follow" />
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      max-width: 720px;
+      margin: 0 auto;
       background: #0f0f0f;
       color: #fff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      padding: 40px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 40px 20px;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 640px;
       margin: 0 auto;
+      padding: 32px;
+      border-radius: 24px;
+      background-color: #1a1a1a;
     }
 
     h1 {
       margin-bottom: 8px;
+      text-align: center;
     }
 
-    div.mandatory {
-      font-size: 0.6rem;
-      color: red;
+    .h1_sub {
+      text-align: center;
+      font-size: 0.9em;
+      color: #888;
+      margin-bottom: 24px;
     }
 
-    div.image_comment {
-      font-size: 0.6rem;
-      font-weight: 100;
-
-    }
-
-    div.option {
-      font-size: 0.6em;
-    }
-
-
+    /* Form Labels */
     label {
       display: block;
       margin-top: 16px;
       font-weight: 600;
     }
 
+    .mandatory {
+      font-size: 0.6rem;
+      color: #ef4444;
+    }
+
+    .option {
+      font-size: 0.6em;
+      color: #888;
+    }
+
+    .image_comment {
+      font-size: 0.6rem;
+      font-weight: 100;
+      color: #888;
+    }
+
+    /* Form Inputs */
     input,
     textarea {
       width: 100%;
       margin-top: 8px;
-      padding: 10px;
-      background: #1a1a1a;
+      padding: 12px;
+      background: #111;
       border: 1px solid #333;
       color: #fff;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #22c55e;
     }
 
     textarea {
       min-height: 80px;
+      resize: vertical;
     }
 
-.login_container{
-flex-direction: column;
-
-}
-    button.login-btn {
-      margin: 2px;
-      margin-top: 8px;
-      padding: 4px, 4px, 4px, 4px;
-      background: #454947;
-      border: none;
-      color: #fffefe;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .noData {
-    position:relative;
-      top: 0;
-      right: 0;
-      margin: 4px, auto, 4px, auto;
-      font-size: 0.6em;
-      
+    /* Login Section */
+    .login_container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-bottom: 16px;
     }
 
     .signin {
-      position: absolute;
-      top: 10px;
-      right: 20px;
+      text-align: right;
     }
 
+    button.login-btn {
+      padding: 8px 16px;
+      background: #333;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-    button {
-      margin-top: 24px;
+    button.login-btn:hover {
+      background: #444;
+    }
+
+    .noData {
+      text-align: center;
+      margin-top: 4px;
+      font-size: 0.6em;
+      color: #666;
+    }
+
+    /* Preview */
+    .preview {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    /* Create Button */
+    .createButton {
+      display: block;
+      width: 80%;
+      margin: 24px auto 0;
       padding: 14px;
-      width: 100%;
       background: #22c55e;
       border: none;
       color: #000;
       font-weight: bold;
+      font-size: 1rem;
       border-radius: 8px;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
-    button:disabled {
+    .createButton:hover {
+      background: #16a34a;
+    }
+
+    .createButton:disabled {
       background: #555;
       cursor: not-allowed;
     }
 
+    /* Notice & Info */
+    p.notice {
+      display: block;
+      max-width: 520px;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 0.85em;
+      color: #aaa;
+    }
 
+    p.required {
+      text-align: center;
+      font-size: 0.8em;
+      color: #888;
+    }
 
+    .imageNotice {
+      font-size: 0.75em;
+      color: #666;
+      margin-top: 4px;
+    }
 
+    /* Caution Box */
+    .caution {
+      display: block;
+      max-width: 480px;
+      margin: 24px auto;
+      padding: 16px 24px;
+      text-align: left;
+      font-size: 0.8em;
+      font-weight: 300;
+      border-radius: 12px;
+      background-color: #252525;
+      border: 1px solid #333;
+    }
+
+    .caution ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .caution li {
+      margin: 8px 0;
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    /* Result */
     .result {
       margin-top: 32px;
       padding: 16px;
@@ -124,29 +218,15 @@ flex-direction: column;
       display: none;
     }
 
-    .preview {
-      margin-top: 16px;
-    }
-
-    .preview img {
-      max-width: 200px;
-      border-radius: 8px;
-      margin-top: 8px;
-    }
-
-    div.notice {
-      font-size: 0.5em;
-    }
-
-    div.disclaimer {
+    .disclaimer {
       font-size: 0.4em;
-      color: #333;
+      color: #444;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
     <script src="https://cdn.privy.io/privy.js"></script>
     <script src="main.js"></script>
 <div class="login_container">
@@ -158,7 +238,7 @@ flex-direction: column;
 </div>
 
     <h1>Dappan.fun</h1>
-    <div class"h1_sub>Token Launch Localization Service</div>
+    <div class="h1_sub">Token Launch Localization Service</div>
 
     <label>Coin Name</label>
     <div class="mandatory">*Required</div>
@@ -179,22 +259,33 @@ flex-direction: column;
       <input type="url" id="imageUrl" placeholder="https://example.com/image.png" required>
     </label>
     <p>
-    <div class="notice">Image must be a direct URL to a publicly accessible image (PNG/JPG).
+    <div class="imageNotice">Image must be a direct URL to a publicly accessible image (PNG/JPG).
       We do not host or store images.</div>
     </p>
     <div class="preview" id="preview"></div>
 
-    <button id="createBtn">Launch your token on Pump.fun</button>
-    <div class="notice">
-      <br>
-      <li>*Required subjects are mandatory</li>
-      <li>You will be NOT able to edit, change, anything after DEPLOY/LAUNCH. Make new one if you had a mistake</li>
+    <button id="createBtn" class="createButton">Launch your token on Pump.fun</button>
+<p class="notice">
+  This service provides UI only. No custody, no recovery.
+</p>
+    
+      <p class="required">"*Required" subjects are mandatory</p>
+<br>
+
+<div class="caution">
+      <div class="cautionTitle"></div>
+<ul class="cautionList">
+      <li>You will be NOT able to edit, change, anything after DEPLOY/LAUNCH. </li>
+      <li>Make new one if you had a mistake.</li>
       <li>Dappan.fun provides a UI layer only.</li>
       <li>We do not host images, metadata, or funds.</li>
       <li>All mint and authority permissions are </li>
       <li>revoked at launch and verifiable on-chain.</li>
       <li>Tokens are immutable after launch. No edits, no recovery.</li>
-    </div>
+</ul></div>
+    
+
+
     <div id="walletInfo"></div>
 
     <div class="result" id="result"></div>
