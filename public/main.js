@@ -1,6 +1,9 @@
 let privy = null;
 let userSolanaAddress = null;
 
+const loginBtn = document.getElementById("loginBtn");
+loginBtn.disabled = true; // ← 最初は殺す
+
 window.addEventListener("DOMContentLoaded", () => {
   if (!window.Privy) {
     console.error("Privy SDK not loaded");
@@ -12,6 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   console.log("Privy initialized");
+  loginBtn.disabled = false; // ← 準備完了で解放
 });
 
 // ===== Disclaimer gate =====
@@ -34,16 +38,13 @@ const walletInfo = document.getElementById("walletInfo");
 
 loginBtn.addEventListener("click", async () => {
   if (!privy) {
-    alert("Wallet system not ready yet. Reload the page.");
+    alert("Wallet system not ready yet");
     return;
   }
 
   try {
     const user = await privy.login();
-
-    const solWallet = user.wallets.find(
-      w => w.chain === "solana"
-    );
+    const solWallet = user.wallets.find(w => w.chain === "solana");
 
     if (!solWallet) {
       alert("No Solana wallet found");
@@ -57,7 +58,6 @@ loginBtn.addEventListener("click", async () => {
 
     loginBtn.innerText = "Wallet connected";
     loginBtn.disabled = true;
-
   } catch (e) {
     console.error(e);
     alert("Wallet login failed");
