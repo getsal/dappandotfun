@@ -1,17 +1,32 @@
 // ===== Phantom / Solana wallet connect =====
 let userSolanaAddress = null;
+let currentProvider = null;
 
 const loginBtn = document.getElementById("loginBtn");
 const walletInfo = document.getElementById("walletInfo");
 
 function getProvider() {
-  // Phantom injects window.solana
-  if ("solana" in window) {
-    const provider = window.solana;
-    if (provider?.isPhantom) return provider;
-  }
-  return null;
+  if (!window.solana) return null;
+
+  if (window.solana.isPhantom) return window.solana;
+  if (window.solana.isBackpack) return window.solana;
+
+  return null; // 将来 Solflare / WC
 }
+
+const disconnectBtn = document.getElementById("disconnectBtn");
+
+disconnectBtn.addEventListener("click", async () => {
+  if (window.solana?.isConnected) {
+    await window.solana.disconnect();
+  }
+
+  userSolanaAddress = null;
+  walletInfo.innerText = "";
+  loginBtn.disabled = false;
+  loginBtn.innerText = "Connect wallet";
+  disconnectBtn.style.display = "none";
+});
 
 async function connectWallet() {
   const provider = getProvider();
@@ -19,21 +34,36 @@ async function connectWallet() {
   if (!provider) {
     // Phantom not installed
     window.open("https://phantom.app/", "_blank");
-    throw new Error("Phantom not found");
+    throw new Error("Wallet not found");
   }
+
+async function disconnectWallet() {
+  if (currentProvider?.isConnected) {
+    await currentProvider.disconnect();
+  }
+
+  userSolanaAddress = null;
+  currentProvider = null;
+
+  walletInfo.innerText = "";
+  loginBtn.disabled = false;
+  loginBtn.innerText = "Connect wallet";
+  disconnectBtn.style.display = "none";
+}
 
   // Request connect (shows Phantom popup)
   const resp = await provider.connect();
+  currentProvider = provider;
   // resp.publicKey is a PublicKey-like object with toString()
   userSolanaAddress = resp.publicKey.toString();
 
   walletInfo.innerText =
     `Connected: ${userSolanaAddress.slice(0, 6)}...${userSolanaAddress.slice(-4)}`;
 
-  loginBtn.innerText = "Wallet connected";
   loginBtn.disabled = true;
-
-  return userSolanaAddress;
+  loginBtn.innerText = "Wallet connected";
+  disconnectBtn.style.display = "inline-block";
+  // return userSolanaAddress;
 }
 
 // If user already connected previously, Phantom may auto-reconnect
@@ -42,16 +72,16 @@ window.addEventListener("load", async () => {
     const provider = getProvider();
     if (!provider) return;
 
-    // Only connect if already trusted (no popup)
     const resp = await provider.connect({ onlyIfTrusted: true });
+    currentProvider = provider;
     userSolanaAddress = resp.publicKey.toString();
 
     walletInfo.innerText =
-      `Connected: ${userSolanaAddress.slice(0, 6)}...${userSolanaAddress.slice(-4)}`;
-    loginBtn.innerText = "Wallet connected";
+      `Connected: ${userSolanaAddress.slice(0,6)}...${userSolanaAddress.slice(-4)}`;
     loginBtn.disabled = true;
+    disconnectBtn.style.display = "inline-block";
   } catch {
-    // ignore (not trusted yet)
+    // not trusted yet
   }
 });
 
@@ -148,36 +178,36 @@ createBtn.addEventListener("click", async () => {
   }
 
   if (createBtn.disabled) return;
-createBtn.disabled = true;
-createBtn.innerText = "Launching...";
+  createBtn.disabled = true;
+  createBtn.innerText = "Launching...";
 
-const resultEl = document.getElementById("result");
-resultEl.innerHTML = "";
+  const resultEl = document.getElementById("result");
+  resultEl.innerHTML = "";
 
-try {
-  const name = document.getElementById("name").value.trim();
-  const symbol = document.getElementById("ticker").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const imageUrl = document.getElementById("imageUrl").value.trim();
+  try {
+    const name = document.getElementById("name").value.trim();
+    const symbol = document.getElementById("ticker").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const imageUrl = document.getElementById("imageUrl").value.trim();
 
-  if (!name || !symbol || !imageUrl) {
-    resultEl.innerHTML = "<p style='color:red'>Required fields missing</p>";
-    return;
-  }
+    if (!name || !symbol || !imageUrl) {
+      resultEl.innerHTML = "<p style='color:red'>Required fields missing</p>";
+      return;
+    }
 
-  const res = await fetch("https://api.dappan.fun/create", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, symbol, description, imageUrl }),
-  });
+    const res = await fetch("https://api.dappan.fun/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, symbol, description, imageUrl }),
+    });
 
-  const json = await res.json();
-  if (!json.success) {
-    resultEl.innerHTML = `<pre style="color:red">${json.error}</pre>`;
-    return;
-  }
+    const json = await res.json();
+    if (!json.success) {
+      resultEl.innerHTML = `<pre style="color:red">${json.error}</pre>`;
+      return;
+    }
 
-  resultEl.innerHTML = `
+    resultEl.innerHTML = `
       <h3>✅ Token Created</h3>
       <code>${json.mint}</code>
       <p>
@@ -186,11 +216,11 @@ try {
         </a>
       </p>
     `;
-} catch (e) {
-  console.error(e);
-  resultEl.innerHTML = "<p style='color:red'>Unexpected error</p>";
-} finally {
-  createBtn.disabled = false;
-  createBtn.innerText = "Launch your token on Pump.fun";
-}
+  } catch (e) {
+    console.error(e);
+    resultEl.innerHTML = "<p style='color:red'>Unexpected error</p>";
+  } finally {
+    createBtn.disabled = false;
+    createBtn.innerText = "Launch your token on Pump.fun";
+  }
 });
