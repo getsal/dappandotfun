@@ -1,3 +1,19 @@
+let privy = null;
+let userSolanaAddress = null;
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (!window.Privy) {
+    console.error("Privy SDK not loaded");
+    return;
+  }
+
+  privy = new Privy({
+    appId: "cmkafa3gk007pih0cb1huef0c",
+  });
+
+  console.log("Privy initialized");
+});
+
 // ===== Disclaimer gate =====
 const modal = document.getElementById("termsModal");
 const agreeCheck = document.getElementById("agreeCheck");
@@ -17,21 +33,31 @@ const loginBtn = document.getElementById("loginBtn");
 const walletInfo = document.getElementById("walletInfo");
 
 loginBtn.addEventListener("click", async () => {
+  if (!privy) {
+    alert("Wallet system not ready yet. Reload the page.");
+    return;
+  }
+
   try {
     const user = await privy.login();
-    const solWallet = user.wallets.find(w => w.chain === "solana");
+
+    const solWallet = user.wallets.find(
+      w => w.chain === "solana"
+    );
 
     if (!solWallet) {
       alert("No Solana wallet found");
       return;
     }
 
-    window.userSolanaAddress = solWallet.address;
+    userSolanaAddress = solWallet.address;
+
     walletInfo.innerText =
-      `Connected: ${solWallet.address.slice(0,6)}...${solWallet.address.slice(-4)}`;
+      `Connected: ${userSolanaAddress.slice(0,6)}...${userSolanaAddress.slice(-4)}`;
 
     loginBtn.innerText = "Wallet connected";
     loginBtn.disabled = true;
+
   } catch (e) {
     console.error(e);
     alert("Wallet login failed");
@@ -39,6 +65,7 @@ loginBtn.addEventListener("click", async () => {
 });
 
 // ===== Create token =====
+const createBtn = document.getElementById("createBtn");
 createBtn.addEventListener("click", async () => {
   // ① Disclaimer
   if (!localStorage.getItem("dappan_agreed")) {
@@ -47,11 +74,10 @@ createBtn.addEventListener("click", async () => {
   }
 
   // ② Wallet
-  if (!window.userSolanaAddress) {
-    alert("Please connect wallet first");
-    return;
-  }
-
+if (!userSolanaAddress) {
+  alert("Please connect wallet first");
+  return;
+}
   if (createBtn.disabled) return;
   createBtn.disabled = true;
   createBtn.innerText = "Launching...";
