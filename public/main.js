@@ -146,7 +146,7 @@ createBtn.addEventListener("click", async () => {
     alert("Please connect wallet first");
     return;
   }
-},
+
   if (createBtn.disabled) return;
 createBtn.disabled = true;
 createBtn.innerText = "Launching...";
