@@ -238,3 +238,43 @@ createBtn.addEventListener("click", async () => {
     createBtn.innerText = "Launch your token on Pump.fun";
   }
 });
+
+// ===== Image Preview =====
+const imageUrlInput = document.getElementById("imageUrl");
+const previewEl = document.getElementById("preview");
+
+// Convert IPFS URL to HTTP gateway URL
+function ipfsToHttp(url) {
+  if (!url) return null;
+  
+  // ipfs:// format
+  if (url.startsWith("ipfs://")) {
+    const cid = url.replace("ipfs://", "");
+    return `https://ipfs.io/ipfs/${cid}`;
+  }
+  
+  // Already an HTTP URL (gateway or other)
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  
+  return null;
+}
+
+// Update preview on input
+imageUrlInput.addEventListener("input", () => {
+  const url = imageUrlInput.value.trim();
+  const httpUrl = ipfsToHttp(url);
+  
+  if (httpUrl) {
+    previewEl.innerHTML = `
+      <p style="font-size:0.8em; color:#888;">Preview:</p>
+      <img src="${httpUrl}" alt="Token image preview" 
+           style="max-width:150px; max-height:150px; border-radius:8px; border:1px solid #333;"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <p style="display:none; color:#ef4444; font-size:0.8em;">Failed to load image</p>
+    `;
+  } else {
+    previewEl.innerHTML = "";
+  }
+});

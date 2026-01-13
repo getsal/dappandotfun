@@ -178,11 +178,35 @@
       color: #888;
     }
 
-    .imageNotice {
-      font-size: 0.75em;
-      color: #666;
-      margin-top: 4px;
-    }
+  .imageNotice{
+    display:block;
+    max-width: 480px;
+    margin: 8px auto;
+    padding:16px;
+    border-radius: 12px;
+    text-align: left;
+    font-size: 0.8em;
+    
+    background-color: #252525;
+    font-size: 0.75em;
+    font-weight: 100;
+    color: #fff;
+    
+}
+  .imageNoticeli {
+margin: 8px;
+
+}
+ .imageNotice p{
+margin: 2px;
+text-align: center;
+
+}
+.imageNoticehead{
+text-align: center;
+font-size: 1.2em;
+margin-top: 2px;
+}
 
     /* Caution Box */
     .caution {
@@ -262,15 +286,22 @@ margin-bottom: 8px;
     <textarea id="description" placeholder="Example:The shit coin of shit coin, the endgame"></textarea>
 
     <label>Image URL
-      <div class="mandatory">*Required / must be a direct link</div>
-      <div class="image_comment">*It Will be your token's icon</div>
+      <div class="mandatory">*Required / must be IPFS or permanent link</div>
+      <div class="image_comment">*It will be your token's icon</div>
 
-      <input type="url" id="imageUrl" placeholder="https://example.com/image.png" required>
+      <input type="url" id="imageUrl" placeholder="ipfs://... or https://ipfs.io/ipfs/..." required>
     </label>
-    <p>
-    <div class="imageNotice">Image must be a direct URL to a publicly accessible image (PNG/JPG).
-      We do not host or store images.</div>
-    </p>
+    
+    <div class="imageNotice">
+    <p>  <div class="imageNoticehead"><strong>How to add your image:</strong></div>
+<ul>
+      1. Upload token image to <a href="https://www.pinata.cloud/" target="_blank" style="color:#22c55e;">Pinata (free)</a> or any IPFS service<br></li>
+      2. Copy the IPFS URL (e.g., ipfs://... or https://gateway.pinata.cloud/ipfs/...)</li><br>
+      3. Paste it to input</li></ul>
+      We do not host or store images. Pump.fun caches images after token creation.
+</p>    
+</div>
+    
     <div class="preview" id="preview"></div>
 
     <button id="createBtn" class="createButton">Launch your token on Pump.fun</button>
