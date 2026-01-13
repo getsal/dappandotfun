@@ -28,18 +28,14 @@ disconnectBtn.addEventListener("click", async () => {
   disconnectBtn.style.display = "none";
 });
 
-async function connectWallet() {
-  const provider = getProvider();
-
-  if (!provider) {
-    // Phantom not installed
-    window.open("https://phantom.app/", "_blank");
-    throw new Error("Wallet not found");
-  }
-
+// Disconnect wallet function
 async function disconnectWallet() {
   if (currentProvider?.isConnected) {
-    await currentProvider.disconnect();
+    try {
+      await currentProvider.disconnect();
+    } catch (e) {
+      console.log("Disconnect error (ignored):", e);
+    }
   }
 
   userSolanaAddress = null;
@@ -50,6 +46,15 @@ async function disconnectWallet() {
   loginBtn.innerText = "Connect wallet";
   disconnectBtn.style.display = "none";
 }
+
+async function connectWallet() {
+  const provider = getProvider();
+
+  if (!provider) {
+    // Phantom not installed
+    window.open("https://phantom.app/", "_blank");
+    throw new Error("Wallet not found");
+  }
 
   // Request connect (shows Phantom popup)
   const resp = await provider.connect();
@@ -63,10 +68,18 @@ async function disconnectWallet() {
   loginBtn.disabled = true;
   loginBtn.innerText = "Wallet connected";
   disconnectBtn.style.display = "inline-block";
-  // return userSolanaAddress;
 }
 
-// If user already connected previously, Phantom may auto-reconnect
+// Disconnect wallet when leaving page or refreshing
+window.addEventListener("beforeunload", () => {
+  if (currentProvider?.isConnected) {
+    currentProvider.disconnect().catch(() => {});
+  }
+});
+
+// Optional: Auto-reconnect on page load (disabled for fresh state on reload)
+// Uncomment if you want auto-reconnect:
+/*
 window.addEventListener("load", async () => {
   try {
     const provider = getProvider();
@@ -84,6 +97,7 @@ window.addEventListener("load", async () => {
     // not trusted yet
   }
 });
+*/
 
 loginBtn.addEventListener("click", async () => {
   try {
